@@ -20,7 +20,7 @@ namespace ET
             GetWindow<ServerCommandLineEditor>(DockDefine.Types);
         }
 
-        private int selectStartConfigIndex = 1;
+        private int selectStartConfigIndex = 0;
         private string[] startConfigs;
         private string startConfig;
         private DevelopMode developMode;
