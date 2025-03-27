@@ -14,12 +14,11 @@ namespace ET.Client
     
 
     [ComponentOf()]
-    [ChildOf(typeof(UIBaseWindow))]
     public class UIComponent : Entity,IAwake,IDestroy
     {
-        public Dictionary<int, UIBaseWindow> AllWindowsDic     = new Dictionary<int, UIBaseWindow>();
+        public Dictionary<int, EntityRef<UIBaseWindow>> AllWindowsDic     = new Dictionary<int, EntityRef<UIBaseWindow>>();
         public List<WindowID> UIBaseWindowlistCached           = new List<WindowID>();
-        public Dictionary<int, UIBaseWindow> VisibleWindowsDic = new Dictionary<int, UIBaseWindow>();
+        public Dictionary<int, EntityRef<UIBaseWindow>> VisibleWindowsDic = new Dictionary<int, EntityRef<UIBaseWindow>>();
         public Queue<WindowID> StackWindowsQueue               = new Queue<WindowID>();
         public bool IsPopStackWndStatus                        = false;
 

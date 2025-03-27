@@ -410,17 +410,20 @@ namespace ET.Client
             {
                 return;
             }
-            foreach (KeyValuePair<int, UIBaseWindow> window in self.AllWindowsDic)
+
+            foreach (KeyValuePair<int, EntityRef<UIBaseWindow>> window in self.AllWindowsDic)
             {
                 UIBaseWindow baseWindow = window.Value;
-                if (baseWindow == null|| baseWindow.IsDisposed)
+                if (baseWindow == null || baseWindow.IsDisposed)
                 {
                     continue;
                 }
+
                 self.HideWindow(baseWindow.WindowID);
-                self.UnLoadWindow(baseWindow.WindowID,false);
+                self.UnLoadWindow(baseWindow.WindowID, false);
                 baseWindow?.Dispose();
             }
+
             self.AllWindowsDic.Clear();
             self.VisibleWindowsDic.Clear();
             self.StackWindowsQueue.Clear();
@@ -436,18 +439,21 @@ namespace ET.Client
         {
             self.IsPopStackWndStatus = false;
             self.UIBaseWindowlistCached.Clear();
-            foreach (KeyValuePair<int, UIBaseWindow> window in self.VisibleWindowsDic)
+            foreach (KeyValuePair<int, EntityRef<UIBaseWindow>> windowRefKV in self.VisibleWindowsDic)
             {
-                if (window.Value.windowType == UIWindowType.Fixed && !includeFixed)
+                var window = (UIBaseWindow)windowRefKV.Value;
+                if (window == null) continue;
+                
+                if (window.windowType == UIWindowType.Fixed && !includeFixed)
                     continue;
-                if (window.Value.IsDisposed)
+                if (window.IsDisposed)
                 {
                     continue;
                 }
-                
-                self.UIBaseWindowlistCached.Add((WindowID)window.Key);
-                window.Value.UIPrefabGameObject?.SetActive(false);
-                UIEventComponent.Instance.GetUIEventHandler(window.Value.WindowID).OnHideWindow(window.Value);
+
+                self.UIBaseWindowlistCached.Add((WindowID)windowRefKV.Key);
+                window.UIPrefabGameObject.SetActive(false);
+                UIEventComponent.Instance.GetUIEventHandler(window.WindowID).OnHideWindow(window);
             }
             if (self.UIBaseWindowlistCached.Count > 0)
             {
